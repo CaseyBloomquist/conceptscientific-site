@@ -365,7 +365,7 @@
 <section class="hero">
   <div class="hero-content">
     <p class="hero-eyebrow">Research &amp; Prototyping</p>
-    <h1>We turn research ideas<br><em>into working systems.</em></h1>
+    <h1>We turn concepts into<br><em id="rotating-word">working systems.</em></h1>
     <p class="hero-sub">Custom instrumentation, rapid prototyping, and systems integration for research teams that need to build.</p>
     <a href="mailto:casey@conceptscientific.com" class="hero-cta">Get in Touch</a>
     <a href="#capabilities" class="hero-cta-secondary">See what we do →</a>
@@ -445,6 +445,23 @@
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 60);
   });
+
+  // Rotating words
+  const words = ['working systems.', 'prototypes.', 'capabilities.', 'milestones.', 'demonstrations.', 'funding.'];
+  const el = document.getElementById('rotating-word');
+  let i = 0;
+
+  function rotateWord() {
+    el.style.transition = 'opacity 0.5s ease';
+    el.style.opacity = 0;
+    setTimeout(() => {
+      i = (i + 1) % words.length;
+      el.textContent = words[i];
+      el.style.opacity = 1;
+    }, 500);
+  }
+
+  setInterval(rotateWord, 2800);
 </script>
 
 </body>
