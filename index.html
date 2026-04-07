@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept Scientific</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #111111;
+    --white: #ffffff;
+    --gray: #555555;
+    --light: #f5f5f3;
+    --accent: #1a1a1a;
+    --rule: #dddddd;
+  }
+
+  body {
+    font-family: 'Georgia', serif;
+    color: var(--black);
+    background: var(--white);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 48px;
+    background: rgba(255,255,255,0.95);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .logo {
+    font-family: 'Georgia', serif;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+  }
+
+  .logo span {
+    color: var(--gray);
+    font-weight: normal;
+  }
+
+  nav a.cta {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+    border-bottom: 1px solid var(--black);
+    padding-bottom: 2px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 80px 48px 80px;
+    position: relative;
+    background: var(--light);
+
+    /* REPLACE with your image:
+       background-image: url('your-image.jpg');
+       background-size: cover;
+       background-position: center;
+    */
+  }
+
+  /* Placeholder image area */
+  .hero-img-placeholder {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #e8e8e6 0%, #d4d4d0 50%, #c8c8c4 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-img-placeholder p {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #999;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 680px;
+  }
+
+  .hero h1 {
+    font-family: 'Georgia', serif;
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: normal;
+    line-height: 1.15;
+    color: var(--black);
+    margin-bottom: 28px;
+  }
+
+  .hero p {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--gray);
+    max-width: 520px;
+    margin-bottom: 40px;
+  }
+
+  .btn {
+    display: inline-block;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--black);
+    text-decoration: none;
+    padding: 16px 32px;
+  }
+
+  .btn:hover { background: #333; }
+
+  /* WHAT WE DO */
+  .services {
+    padding: 100px 48px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .section-label {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 56px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 48px 40px;
+  }
+
+  .service h3 {
+    font-family: 'Georgia', serif;
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 16px;
+    color: var(--black);
+  }
+
+  .service p {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--gray);
+  }
+
+  /* SELECTED WORK */
+  .work {
+    padding: 0 48px 100px;
+    border-top: 1px solid var(--rule);
+    padding-top: 80px;
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2px;
+    margin-top: 56px;
+  }
+
+  .work-card {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: #e0e0de;
+    cursor: pointer;
+  }
+
+  /* Card image placeholder — replace background with url() */
+  .work-card .card-img {
+    position: absolute;
+    inset: 0;
+    background: #d8d8d4;
+    transition: transform 0.5s ease;
+  }
+
+  .work-card:nth-child(2) .card-img { background: #d0d0cc; }
+  .work-card:nth-child(3) .card-img { background: #c8c8c4; }
+  .work-card:nth-child(4) .card-img { background: #d4d4d0; }
+  .work-card:nth-child(5) .card-img { background: #ccccca; }
+
+  .work-card:hover .card-img { transform: scale(1.03); }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .work-card:hover .card-overlay { opacity: 1; }
+
+  .card-label {
+    position: absolute;
+    bottom: 20px;
+    left: 24px;
+    right: 24px;
+  }
+
+  .card-tag {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 6px;
+  }
+
+  .card-title {
+    font-family: 'Georgia', serif;
+    font-size: 17px;
+    font-weight: normal;
+    color: var(--white);
+    line-height: 1.3;
+  }
+
+  /* img placeholder text */
+  .card-placeholder-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-placeholder-text p {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+  }
+
+  /* WHY US */
+  .why {
+    background: var(--black);
+    color: var(--white);
+    padding: 100px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .why h2 {
+    font-family: 'Georgia', serif;
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: normal;
+    line-height: 1.25;
+  }
+
+  .why-points {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .why-point {
+    border-top: 1px solid #333;
+    padding-top: 24px;
+  }
+
+  .why-point h4 {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+
+  .why-point p {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #ccc;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 100px 48px;
+    text-align: center;
+    border-top: 1px solid var(--rule);
+  }
+
+  .cta-section h2 {
+    font-family: 'Georgia', serif;
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: normal;
+    margin-bottom: 20px;
+  }
+
+  .cta-section p {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 17px;
+    color: var(--gray);
+    margin-bottom: 40px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  .btn-outline {
+    display: inline-block;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--black);
+    border: 1px solid var(--black);
+    text-decoration: none;
+    padding: 16px 32px;
+  }
+
+  .btn-outline:hover { background: var(--black); color: var(--white); }
+
+  /* FOOTER */
+  footer {
+    padding: 32px 48px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    color: #aaa;
+    letter-spacing: 0.05em;
+  }
+
+  footer a {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    color: #aaa;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+  }
+
+  footer a:hover { color: var(--black); }
+
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .hero { padding: 100px 24px 60px; }
+    .services, .work, .cta-section { padding-left: 24px; padding-right: 24px; }
+    .why { grid-template-columns: 1fr; padding: 60px 24px; gap: 48px; }
+    footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">Concept <span>Scientific</span></a>
+  <a class="cta" href="#contact">Book an Intro Call</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-img-placeholder">
+    <p>← Replace with hero image</p>
+  </div>
+  <div class="hero-content">
+    <h1>We turn research ideas into working systems.</h1>
+    <p>Custom instrumentation, rapid prototyping, and systems integration for research teams that need to build — fast, rigorous, and built to learn from.</p>
+    <a href="#contact" class="btn">Book a Free Intro Call</a>
+  </div>
+</section>
+
+<!-- WHAT WE DO -->
+<section class="services">
+  <p class="section-label">What We Do</p>
+  <div class="services-grid">
+    <div class="service">
+      <h3>Custom Research Tools & Instrumentation</h3>
+      <p>When the instrument you need doesn't exist, we design and build it. From electrochemical reactors to sensor arrays and automated test rigs — purpose-built for your experiment.</p>
+    </div>
+    <div class="service">
+      <h3>Rapid Prototyping</h3>
+      <p>Concept to physical prototype, fast. We work across 3D printing, CNC machining, electronics, and mechanical fabrication to get something in your hands quickly — built to learn from.</p>
+    </div>
+    <div class="service">
+      <h3>Systems Integration</h3>
+      <p>Sensors, controls, fluidics, software, and hardware into a single working system. We connect the pieces and make the whole thing run — reliably, in a research environment.</p>
+    </div>
+    <div class="service">
+      <h3>Research & Technical Consulting</h3>
+      <p>Not sure where to start? We scope problems, sketch technical approaches, and help research teams pressure-test ideas before committing resources. Useful whether or not you build with us.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SELECTED WORK -->
+<section class="work">
+  <p class="section-label">Selected Work</p>
+  <div class="work-grid">
+
+    <div class="work-card">
+      <div class="card-img"></div>
+      <div class="card-placeholder-text"><p>← Plasma reactor photo / CAD</p></div>
+      <div class="card-overlay"></div>
+      <div class="card-label">
+        <p class="card-tag">Custom Instrumentation</p>
+        <p class="card-title">Plasma-Electrochemical Reactor</p>
+      </div>
+    </div>
+
+    <div class="work-card">
+      <div class="card-img"></div>
+      <div class="card-placeholder-text"><p>← ARPA-E booth photo</p></div>
+      <div class="card-overlay"></div>
+      <div class="card-label">
+        <p class="card-tag">Systems Integration</p>
+        <p class="card-title">ARPA-E Innovation Summit Booth</p>
+      </div>
+    </div>
+
+    <div class="work-card">
+      <div class="card-img"></div>
+      <div class="card-placeholder-text"><p>← Floor tile photo / CAD</p></div>
+      <div class="card-overlay"></div>
+      <div class="card-label">
+        <p class="card-tag">Rapid Prototyping</p>
+        <p class="card-title">Energy Harvesting Floor Tile</p>
+      </div>
+    </div>
+
+    <div class="work-card">
+      <div class="card-img"></div>
+      <div class="card-placeholder-text"><p>← Dispenser photo / CAD</p></div>
+      <div class="card-overlay"></div>
+      <div class="card-label">
+        <p class="card-tag">Full-Cycle Prototyping</p>
+        <p class="card-title">Touchless Dispensers — Super Bowl Campaign</p>
+      </div>
+    </div>
+
+    <div class="work-card">
+      <div class="card-img"></div>
+      <div class="card-placeholder-text"><p>← Tokyo installation photo</p></div>
+      <div class="card-overlay"></div>
+      <div class="card-label">
+        <p class="card-tag">Systems Integration · Project Leadership</p>
+        <p class="card-title">Experiential Vending Machine — Tokyo</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY CONCEPT SCIENTIFIC -->
+<section class="why">
+  <h2>PhD-level research depth. Hands-on build capability. No overhead.</h2>
+  <div class="why-points">
+    <div class="why-point">
+      <h4>Builds things, doesn't just advise</h4>
+      <p>We design, fabricate, and deliver working systems — not decks. If it needs to exist physically, we can make it.</p>
+    </div>
+    <div class="why-point">
+      <h4>Fluent across domains</h4>
+      <p>Materials, hardware, software, controls, fabrication. We move fast across whatever the project requires without needing a specialist for each piece.</p>
+    </div>
+    <div class="why-point">
+      <h4>Can communicate the science</h4>
+      <p>We write, present, and think like researchers — which means we integrate with your team and can contribute to papers, presentations, and grant narratives.</p>
+    </div>
+    <div class="why-point">
+      <h4>Small and focused</h4>
+      <p>No account managers, no overhead, no handoffs. You work directly with the person doing the work.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2>Start with a conversation.</h2>
+  <p>Every engagement begins with a free 30-minute intro call. No commitment — just a conversation to understand your project and see if there's a fit.</p>
+  <a href="mailto:casey@conceptscientific.com" class="btn-outline">Book an Intro Call</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Concept Scientific LLC · Seattle, WA</p>
+  <a href="mailto:casey@conceptscientific.com">casey@conceptscientific.com</a>
+</footer>
+
+</body>
+</html>
