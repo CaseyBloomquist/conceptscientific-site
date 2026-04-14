@@ -98,17 +98,7 @@
       url('hero.jpg') center center / cover no-repeat;
   }
 
-  /* Subtle grid texture overlay */
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(58,111,216,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(58,111,216,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-  }
+
 
   /* Glow effect */
   .hero::after {
@@ -364,7 +354,7 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-content">
-    <p class="hero-eyebrow">Research &amp; Prototyping</p>
+    <p class="hero-eyebrow">Engineering Consulting</p>
     <h1>We turn concepts into<br><em id="rotating-word">working systems.</em></h1>
     <p class="hero-sub">Custom instrumentation, rapid prototyping, and systems integration for research teams that need to build.</p>
     <a href="mailto:casey@conceptscientific.com" class="hero-cta">Get in Touch</a>
