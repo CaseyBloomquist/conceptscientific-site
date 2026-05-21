@@ -167,6 +167,59 @@
 
   .hero-cta-secondary:hover { color: var(--white); }
 
+  /* CONTACT POPOVER */
+  .contact-pop {
+    position: absolute;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    min-width: 280px;
+    background: rgba(14,10,26,0.98);
+    border: 1px solid var(--rule);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    pointer-events: none;
+  }
+  .contact-pop.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .contact-pop a.cp-email {
+    display: block;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    transition: background 0.15s ease;
+  }
+  .contact-pop a.cp-email:hover {
+    background: rgba(162,89,217,0.12);
+  }
+  .contact-pop button.cp-copy {
+    background: none;
+    border: none;
+    color: var(--gray);
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .contact-pop button.cp-copy:hover {
+    color: var(--white);
+    background: rgba(162,89,217,0.08);
+  }
+  .contact-pop button.cp-copy.copied {
+    color: var(--accent-cyan);
+  }
+
   /* CAPABILITIES */
   .capabilities {
     background: var(--mid);
@@ -514,23 +567,87 @@
 
   setInterval(rotateWord, 2800);
 
-  // Click to copy email — falls back to mailto if clipboard API unavailable or fails
+  // Contact popover: shows email + copy button below "Get in Touch" buttons.
   const EMAIL = 'casey@conceptscientific.com';
-  document.querySelectorAll('a[href^="mailto:"]').forEach(a => {
-    const originalText = a.textContent;
-    let timeoutId = null;
+  const pop = document.createElement('div');
+  pop.className = 'contact-pop';
+  pop.setAttribute('role', 'dialog');
+  pop.setAttribute('aria-label', 'Contact options');
+  pop.innerHTML =
+    '<a class="cp-email" href="mailto:' + EMAIL + '">' + EMAIL + '</a>' +
+    '<button class="cp-copy" type="button">Copy email</button>';
+  document.body.appendChild(pop);
+  const copyBtn = pop.querySelector('.cp-copy');
+  let anchorEl = null;
+  let copyTimeoutId = null;
+
+  function positionPop() {
+    if (!anchorEl) return;
+    const r = anchorEl.getBoundingClientRect();
+    const popW = pop.offsetWidth;
+    let left = r.left + window.scrollX;
+    // Keep popover within viewport horizontally
+    const maxLeft = window.scrollX + document.documentElement.clientWidth - popW - 12;
+    if (left > maxLeft) left = maxLeft;
+    if (left < window.scrollX + 12) left = window.scrollX + 12;
+    pop.style.top = (r.bottom + window.scrollY + 8) + 'px';
+    pop.style.left = left + 'px';
+  }
+
+  function openPop(el) {
+    anchorEl = el;
+    pop.classList.add('open');
+    positionPop();
+  }
+
+  function closePop() {
+    pop.classList.remove('open');
+    anchorEl = null;
+    copyBtn.classList.remove('copied');
+    copyBtn.textContent = 'Copy email';
+    if (copyTimeoutId) { clearTimeout(copyTimeoutId); copyTimeoutId = null; }
+  }
+
+  // Triggers: nav CTA, hero CTA, and CTA strip "Get in Touch"
+  const triggers = document.querySelectorAll(
+    'a.nav-cta[href^="mailto:"], a.hero-cta[href^="mailto:"], .cta-strip a[href^="mailto:"]'
+  );
+  triggers.forEach(a => {
     a.addEventListener('click', (e) => {
-      if (!navigator.clipboard) return;
       e.preventDefault();
-      navigator.clipboard.writeText(EMAIL).then(() => {
-        a.textContent = 'Copied!';
-        if (timeoutId) clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => { a.textContent = originalText; }, 1500);
-      }).catch(() => {
-        window.location.href = a.href;
-      });
+      if (anchorEl === a) { closePop(); return; }
+      openPop(a);
     });
   });
+
+  copyBtn.addEventListener('click', () => {
+    const done = () => {
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('copied');
+      if (copyTimeoutId) clearTimeout(copyTimeoutId);
+      copyTimeoutId = setTimeout(closePop, 1200);
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(EMAIL).then(done).catch(() => {
+        window.location.href = 'mailto:' + EMAIL;
+      });
+    } else {
+      window.location.href = 'mailto:' + EMAIL;
+    }
+  });
+
+  // Close on outside click, Escape, or layout change
+  document.addEventListener('click', (e) => {
+    if (!pop.classList.contains('open')) return;
+    if (pop.contains(e.target)) return;
+    if (anchorEl && anchorEl.contains(e.target)) return;
+    closePop();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePop();
+  });
+  window.addEventListener('scroll', positionPop, { passive: true });
+  window.addEventListener('resize', positionPop);
 </script>
 
 </body>
